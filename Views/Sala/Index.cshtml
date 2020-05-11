@@ -1,0 +1,59 @@
+﻿@model IEnumerable<PlanificatorSali.Models.Sala>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Denumire)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Etaj)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.capacitate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.infosala)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.disponibila)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Denumire)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Etaj)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.capacitate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.infosala)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.disponibila)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.salaID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.salaID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.salaID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

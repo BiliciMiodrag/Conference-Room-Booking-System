@@ -1,0 +1,48 @@
+﻿@model PlanificatorSali.Models.Sala
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Sala</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Denumire)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Denumire)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Etaj)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Etaj)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.capacitate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.capacitate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.infosala)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.infosala)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.disponibila)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.disponibila)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.salaID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
