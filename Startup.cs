@@ -17,6 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PlanificatorSali.Data;
 using PlanificatorSali.Models;
+using Newtonsoft.Json;
 
 namespace PlanificatorSali
 {
@@ -56,7 +57,10 @@ namespace PlanificatorSali
             services.AddScoped<IEmailSender, EmailSender>();
 
             services.AddControllersWithViews();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddControllers();
+          
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

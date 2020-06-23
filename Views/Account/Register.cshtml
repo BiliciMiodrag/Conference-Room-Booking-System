@@ -1,15 +1,27 @@
 ﻿
 @model PlanificatorSali.Models.UserRegistrationModel
 
+<style>
+    h4{
+        text-align:center;
+    }
+    
+    .col-md-4 {
+        margin: auto;
+        width: 50%;
+        border: 3px solid green;
+        padding: 10px;
+        margin-bottom:20px;
+    }
+</style>
 
+  
 
-    <h1>Register</h1>
+<h4>Adăugare utilizatori</h4>
 
-<h4>UserRegistrationModel</h4>
-<hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Register">
+        <form asp-action="Register" >
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Prenume" class="control-label"></label>

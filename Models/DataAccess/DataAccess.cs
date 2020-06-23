@@ -1,35 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using PlanificatorSali.Models.Configuration;
-using PlanificatorSali.Models;
-using Microsoft.AspNetCore.Http;
-using System.Security.Claims;
-
 
 namespace PlanificatorSali.Models.DataAccess
 {
     public class DataAccess
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        public DataAccess(IHttpContextAccessor httpContextAccessor)
-        {
-            _httpContextAccessor = httpContextAccessor;
-        }
-        
         public string _ConnectionStr { get; set; }
-       
-        
-
         public DataAccess(string ConnectionStr)
         {
             _ConnectionStr = ConnectionStr;
-        }
 
+        }
+       
         private SqlConnection GetConnection()
         {
             SqlConnection conn = new SqlConnection(_ConnectionStr);
@@ -42,51 +27,52 @@ namespace PlanificatorSali.Models.DataAccess
             conn.Close();
         }
 
-        public List<Evenimente> GetCalendarEvents(string start, string end)
+        public List<Event> GetCalendarEvents(string start, string end)  //Events=events
         {
-            List<Evenimente> events = new List<Evenimente>();
+            List<Event> events = new List<Event>();
 
             using (SqlConnection conn = GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand(@"select
-                                                             ID
-                                                            ,start_data
-                                                            ,sfarsit_data
-                                                            ,titlu
-                                                            ,[descriere]
-                                                            ,AllDay
-                                                            
+                                                             EventId
+                                                            ,event_start
+                                                            ,event_end
+                                                            ,Title
+                                                            ,[Description]
+                                                            ,all_day
+                                                            ,color 
+                                                            ,salaID
+                                                            ,ApplicationUserId
+                                                           
 
                                                         from
-                                                            [Evenimente]
+                                                            [Events]
                                                         where
-                                                            start_data between @start and @end", conn)
+                                                            event_start between @start and @end", conn)
                 {
                     CommandType = CommandType.Text
                 })
                 {
                     cmd.Parameters.Add("@start", SqlDbType.VarChar).Value = start;
                     cmd.Parameters.Add("@end", SqlDbType.VarChar).Value = end;
-
+                    
                     using (SqlDataReader dr = cmd.ExecuteReader())
                     {
                         while (dr.Read())
                         {
-                            events.Add(new Evenimente()
+                            events.Add(new Event()
                             {
-                                ID = Convert.ToInt32(dr["ID"]),
-                                Titlu = Convert.ToString(dr["titlu"]),
-                                Descriere = Convert.ToString(dr["descriere"]),
-                                start_data = Convert.ToString(dr["start_data"]),
-                                sfarsit_data = Convert.ToString(dr["sfarsit_data"]),
-                                AllDay = Convert.ToBoolean(dr["AllDay"]),
-                               // culoare = Convert.ToString(dr["culoare"]),
-                               // salaID = Convert.ToInt32(dr["salaID"]),
-                                //participanti = Convert.ToString("participanti"),
-                               //ApplicationUserId = Convert.ToString(dr["ApplicationUserId"])
-
-
-                                
+                                EventId = Convert.ToInt32(dr["EventId"]),  
+                                Title = Convert.ToString(dr["Title"]), //title
+                                Description = Convert.ToString(dr["Description"]),//description
+                                Start = Convert.ToString(dr["event_start"]),
+                                End = Convert.ToString(dr["event_end"]),
+                                AllDay = Convert.ToBoolean(dr["all_day"]),
+                                color = Convert.ToString(dr["color"]),//color
+                                //participanti = Convert.ToString(dr["participanti"]),
+                                salaID = Convert.ToInt32(dr["salaID"]),//roomId
+                              
+                               ApplicationUserId = Convert.ToString(dr["ApplicationUserId"])
                             });
                         }
                     }
@@ -96,41 +82,39 @@ namespace PlanificatorSali.Models.DataAccess
             return events;
         }
 
-        public string UpdateEvent(Evenimente evt)
+        public string UpdateEvent(Event evt)
         {
             string message = "";
             SqlConnection conn = GetConnection();
             SqlTransaction trans = conn.BeginTransaction();
-
             try
             {
                 SqlCommand cmd = new SqlCommand(@"update
-	                                                [Evenimente]
+	                                                [Events]
                                                 set
-	                                                [Descriere]=@descriere
-                                                    ,Titlu=@title
-	                                                ,start_data=@start
-	                                                ,sfarsit_data=@end 
-	                                                ,Allday=@allDay
-                                                    ,culoare=@color
-                                                    ,salaID=@roomID
-                                                    ,participanti=@participants
+	                                                [Description]=@description
+                                                    ,Title=@title
+	                                                ,event_start=@event_start
+	                                                ,event_end=@end 
+	                                                ,all_day=@allDay
+                                                    ,color=@color
+                                                    ,salaID=@salaID
+                                                        
                                                 where
-	                                                ID=@eventId", conn, trans)
+	                                                EventId=@eventId", conn, trans)
                 {
                     CommandType = CommandType.Text
                 };
-                cmd.Parameters.Add("@eventId", SqlDbType.Int).Value = evt.ID;
-                cmd.Parameters.Add("@title", SqlDbType.VarChar).Value = evt.Titlu;
-                cmd.Parameters.Add("@description", SqlDbType.VarChar).Value = evt.Descriere;
-                cmd.Parameters.Add("@start", SqlDbType.DateTime).Value = evt.start_data;
-                cmd.Parameters.Add("@end", SqlDbType.DateTime).Value = Helpers.ToDBNullOrDefault(evt.sfarsit_data);
+                cmd.Parameters.Add("@eventId", SqlDbType.Int).Value = evt.EventId;
+                cmd.Parameters.Add("@title", SqlDbType.VarChar).Value = evt.Title;
+                cmd.Parameters.Add("@description", SqlDbType.VarChar).Value = evt.Description;
+                cmd.Parameters.Add("@event_start", SqlDbType.DateTime).Value = evt.Start;
+                cmd.Parameters.Add("@end", SqlDbType.DateTime).Value = Helpers.ToDBNullOrDefault(evt.End);
                 cmd.Parameters.Add("@allDay", SqlDbType.Bit).Value = evt.AllDay;
-                cmd.Parameters.Add("@color", SqlDbType.VarChar).Value = evt.culoare;
+                cmd.Parameters.Add("@color", SqlDbType.VarChar).Value = evt.color;
+               // cmd.Parameters.Add("@color", SqlDbType.VarChar).Value = evt.participanti;
                 cmd.Parameters.Add("@salaID", SqlDbType.Int).Value = evt.salaID;
-                cmd.Parameters.Add("@participants", SqlDbType.VarChar).Value = evt.participanti;
                 cmd.ExecuteNonQuery();
-
                 trans.Commit();
             }
             catch (Exception exp)
@@ -145,87 +129,19 @@ namespace PlanificatorSali.Models.DataAccess
 
             return message;
         }
-        public string AddEvent(Evenimente evt, out int eventId)
-        {
-            string message = "";
-            SqlConnection conn = GetConnection();
-            SqlTransaction trans = conn.BeginTransaction();
-            eventId = 0;
-            
+       
 
-
-
-
-            try
-            {
-                SqlCommand cmd = new SqlCommand(@"insert into [Evenimente]
-                                                (
-	                                                Titlu
-	                                                ,[Descriere]
-	                                                ,start_data
-	                                                ,sfarsit_data
-	                                                ,AllDay
-                                                    ,salaID
-                                                   
-                                               
-                                                  
-                                                )
-                                                values
-                                                (
-	                                                @titlu
-	                                                ,@description
-	                                                ,@start
-	                                                ,@end
-	                                                ,@allDay
-                                                    ,@roomID
-                                              
-                                                  
-                                                   
-
-                                                );
-                                                select scope_identity()", conn, trans)
-                {
-                    CommandType = CommandType.Text
-                };
-                cmd.Parameters.Add("@titlu", SqlDbType.NVarChar).Value = evt.Titlu;
-                cmd.Parameters.Add("@description", SqlDbType.NVarChar).Value = evt.Descriere;
-                cmd.Parameters.Add("@start", SqlDbType.DateTime).Value = evt.start_data;
-                cmd.Parameters.Add("@end", SqlDbType.DateTime).Value = Helpers.ToDBNullOrDefault(evt.sfarsit_data);
-                cmd.Parameters.Add("@allDay", SqlDbType.Bit).Value = evt.AllDay;
-               // cmd.Parameters.Add("@color", SqlDbType.NVarChar).Value = evt.culoare;
-                cmd.Parameters.Add("@roomID", SqlDbType.Int).Value = 
-                //cmd.Parameters.Add("@participanti", SqlDbType.NVarChar).Value = evt.participanti;
-                //var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                //cmd.Parameters.Add("@ApplicationUserId", SqlDbType.Bit).Value = userId;
-
-                eventId = Convert.ToInt32(cmd.ExecuteScalar());
-
-                trans.Commit();
-            }
-            catch (Exception exp)
-            {
-                trans.Rollback();
-                message = exp.Message;
-            }
-            finally
-            {
-                CloseConnection(conn);
-            }
-
-            return message;
-        }
         public string DeleteEvent(int eventId)
         {
             string message = "";
             SqlConnection conn = GetConnection();
             SqlTransaction trans = conn.BeginTransaction();
-
             try
             {
                 SqlCommand cmd = new SqlCommand(@"delete from 
-	                                                [Evenimente]
+	                                                [Events]
                                                 where
-	                                                event_id=@eventId", conn, trans)
+	                                                EventId=@eventId", conn, trans)
                 {
                     CommandType = CommandType.Text
                 };

@@ -10,16 +10,15 @@ namespace PlanificatorSali.Models
 {
     public class UserLoginModel
     {
-        [Required]
+        [Required(ErrorMessage="Câmpul email este obligatoriu")]
         [EmailAddress]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Câmpul parola este obligatoriu")]
         [DataType(DataType.Password)]
         [DisplayName("Parola")]
         public string Password { get; set; }
 
-        [Display(Name = "Ține-mă minte?")]
         public bool RememberMe { get; set; }
     }
 }

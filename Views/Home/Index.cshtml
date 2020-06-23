@@ -2,7 +2,112 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@{
+    Layout = null; 
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+   
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="~/img/favicon.ico" />
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" />
+    <!-- Third party plugin CSS-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="~/css/styles.css" rel="stylesheet" />
+</head>
+<body id="page-top">
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+        <div class="container">
+             <a asp-area="" asp-controller="Home" asp-action="Index"> <img src="~/img/OnTime.png" alt="OnTime"   style="width:120px; height:auto; ">  </a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <partial name="_LoginPartial" />
+                </div>
+                </div>
+        </div>
+    </nav>
+    <!-- Masthead-->
+                <header class="masthead">
+                    <div class="container h-100">
+                        <div class="row h-100 align-items-center justify-content-center text-center">
+                            <div class="col-lg-10 align-self-end">
+                                <h1 class="text-uppercase text-white font-weight-bold">OnTime rămâi planificat și tot timpul informat</h1>
+                                <hr class="divider my-4" />
+                            </div>
+                            <div class="col-lg-8 align-self-baseline">
+
+                                <a class="btn btn-primary btn-xl js-scroll-trigger" asp-controller="Account" asp-action="Login">Să începem</a>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Services-->
+                <section class="page-section" id="services">
+                    <div class="container">
+                        <h2 class="text-center mt-0">La dispoziția ta</h2>
+                        <hr class="divider my-4" />
+                        <div class="row">
+                            <div class="col-lg-3 col-md-6 text-center">
+                                <div class="mt-5">
+                                    <i class="fas fa-4x fa-calendar-alt text-info mb-4"></i>
+                                    <h3 class="h4 mb-2">Mereu planificat</h3>
+                                    <p class="text-muted mb-0">Cu ajutorul calendarului, reusești să gestionezi eficient evenimentele</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 text-center">
+                                <div class="mt-5">
+                                    <i class="fas fa-4x fa-laptop-code text-info mb-4"></i>
+                                    <h3 class="h4 mb-2">Mereu la curent</h3>
+                                    <p class="text-muted mb-0">Usor de accesat, de oriunde și oricand, totul la un click distanță</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 text-center">
+                                <div class="mt-5">
+                                    <i class="fas fa-4x fa-globe text-info mb-4"></i>
+                                    <h3 class="h4 mb-2">Pregătit pentru lucruri mărețe</h3>
+                                    <p class="text-muted mb-0">Salvează timp, navighează cu spor</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 text-center">
+                                <div class="mt-5">
+                                    <i class="fas fa-4x fa-handshake text-info mb-4"></i>
+                                    <h3 class="h4 mb-2">Un drum parcurs împreună</h3>
+                                    <p class="text-muted mb-0">În orice pas te-ai afla, suntem alături de tine și de afacerea ta!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            
+                <!-- Call to action-->
+                <section class="page-section bg-dark text-white">
+                    <div class="container text-center">
+                        <h2 class="mb-4">Un intrument gândit să-ți crească eficiența</h2>
+
+                    </div>
+                </section>
+                <!-- Footer-->
+                <!-- Bootstrap core JS-->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+                <!-- Third party plugin JS-->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+                <!-- Core theme JS-->
+                <script src="js/scripts.js"></script>
+</body>
+</html>

@@ -11,7 +11,9 @@ using Microsoft.AspNetCore.Mvc;
 using PlanificatorSali.Models;
 using PlanificatorSali.Controllers;
 using Microsoft.AspNetCore.Http;
-
+using Microsoft.AspNetCore.Authorization;
+using PlanificatorSali.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace PlanificatorSali.Controllers
 {
@@ -22,16 +24,18 @@ namespace PlanificatorSali.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
+        private readonly PlanificatorSaliContext _context;
 
         //mail:
 
 
-        public AccountController(IMapper mapper, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IEmailSender emailSender)
+        public AccountController(IMapper mapper, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IEmailSender emailSender, PlanificatorSaliContext context)
         {
             _mapper = mapper;
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
+            _context = context;
         }
 
 
@@ -68,7 +72,7 @@ namespace PlanificatorSali.Controllers
         /// <summary>
         /// mail
         /// </summary>
-
+      
         [HttpGet]
         public IActionResult Register()
         {
@@ -102,13 +106,13 @@ namespace PlanificatorSali.Controllers
             {
                 await _userManager.AddToRoleAsync(user, "Administrator");
 
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction("Register", "Account");
             }
             else
             {
                 await _userManager.AddToRoleAsync(user, "User");
 
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction("Register", "Account");
             }
             
         }
@@ -145,7 +149,7 @@ namespace PlanificatorSali.Controllers
             if (Url.IsLocalUrl(returnUrl))
                 return Redirect(returnUrl);
             else
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction(nameof(CalendarController.Calendar), "Calendar");
 
         }
         [HttpPost]
@@ -196,6 +200,78 @@ namespace PlanificatorSali.Controllers
         public IActionResult ResetPasswordConfirmation()
         {
             return View();
+        }
+        
+        public IActionResult GetAllUsers ()
+        {
+            List<Models.ApplicationUser> userlist = new List<Models.ApplicationUser>();
+            userlist = (from users in _context.ApplicationUser select users).ToList();
+            return View(userlist);
+        }
+        
+      
+
+        [HttpPost]
+        [Route("delete")]
+        public IActionResult Delete (string id)
+        {
+            var user = _context.ApplicationUser.Find(id);
+            _context.ApplicationUser.Remove(user);
+            _context.SaveChanges();
+            return RedirectToAction("GetAllUsers");
+        }
+
+        [HttpGet]
+        
+        public IActionResult Find (string id)
+        {
+            var user = _context.ApplicationUser.Find(id);
+            return new JsonResult(user);
+        }
+
+        [HttpPost]
+        [Route("update")]
+        public IActionResult Update(string id, string nume,string prenume, string email)
+        {
+            var user = _context.ApplicationUser.Find(id);
+
+            user.Nume = nume;
+            user.Prenume = prenume;
+            user.Email=email;
+            _context.SaveChanges();
+            return RedirectToAction("GetAllUsers");
+        }
+
+        [HttpGet]
+        public IActionResult ProfilulMeu()
+        {
+
+            var userid = _userManager.GetUserId(HttpContext.User);
+            if(userid==null)
+            {
+                return RedirectToAction("Login","Account");
+            }
+            else
+            {
+
+            
+            ApplicationUser user = _userManager.FindByIdAsync(userid).Result;
+            return View(user);
+            }
+        }
+
+
+
+        [HttpPost]
+        public IActionResult ProfilulMeu(string Id, string Nume, string Prenume, string PhoneNumber, string Email)
+        {
+            var user = _context.ApplicationUser.Find(Id);
+            user.Nume = Nume;
+            user.Prenume = Prenume;
+            user.PhoneNumber = PhoneNumber;
+            user.Email = Email;
+            _context.SaveChanges();
+            return RedirectToAction("ProfilulMeu");
         }
     }
 }
