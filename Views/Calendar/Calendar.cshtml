@@ -1,32 +1,73 @@
-﻿@model PlanificatorSali.Models.Sala
-@{
-    ViewData["Title"] = "Calendar";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-@{
-    Layout = null;
-}
+﻿@model PlanificatorSali.Models.Event
+
+@{Layout = null; }
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 
 
 
-
-<!--<link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/core/main.min.css' rel="stylesheet">
-<link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/daygrid/main.min.css' rel='stylesheet' />
-<link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/timegrid/main.min.css' rel='stylesheet' />-->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css" rel='stylesheet' />
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/lateral.css" />
 <link href="~/css/calendar.css" rel="stylesheet" type="text/css" />
-<!--<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />-->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
+<link rel="stylesheet" href="~/css/site.css" />
 
 <body>
 
-
-
-
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-secondary">
+        <div class="container">
+            <a asp-area="" asp-controller="Home" asp-action="Index"> <img src="~/img/OnTime.png" alt="OnTime" style="width:120px; height:auto; ">  </a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </div>
+    </nav>
+    <span id="open" onclick="openNav()">&#9776; </span>
     <div id="calendar-wrapper">
-        <div id="calendar"></div>
+        <div id="calendar">
+        </div>
+        @if (SignInManager.IsSignedIn(User))
+        {
+            @if (User.IsInRole("User"))
+            {
+
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a class="list-group-item" asp-controller="Calendar" asp-action="Calendar"><i class="fa fa-calendar" aria-hidden="true"></i> Planifică</a>
+        <a class="list-group-item" asp-controller="Calendar" asp-action="GetUserEvents"><i class="fa fa-calendar-o" aria-hidden="true"></i>  Planificările mele</a>
+        <a class="list-group-item" asp-controller="Account" asp-action="GetAllUsers"><i class="fa fa-users" aria-hidden="true"></i>  Utilizatori</a>
+        <a class="list-group-item" asp-controller="Account" asp-action="ProfilulMeu"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Profilul meu</a>
     </div>
+            }
+            else
+            {
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a class="list-group-item" asp-controller="Calendar" asp-action="Calendar"><i class="fa fa-calendar" aria-hidden="true"></i> Planifică</a>
+        <a class="list-group-item" asp-controller="Calendar" asp-action="GetUserEvents"><i class="fa fa-calendar-o" aria-hidden="true"></i>  Planificările mele</a>
+        <a class="list-group-item" asp-controller="Account" asp-action="Register"><i class="fa fa-user-plus" aria-hidden="true"></i> Adăugare Utilizatori</a>
+        <a class="list-group-item" asp-controller="Account" asp-action="GetAllUsers"><i class="fa fa-users" aria-hidden="true"></i> Gestiune utilizatori</a>
+        <a class="list-group-item" asp-controller="Sala" asp-action="Index"><i class="fa fa-plus-circle" aria-hidden="true"></i> Gestiune săli</a>
+        <a class="list-group-item" asp-controller="Account" asp-action="ProfilulMeu"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Profilul meu</a>
+    </div>
+            }
+        }
+
+    </div>
+
+    <section class="page-section bg-dark text-white">
+        <div class="container text-center">
+            <h2 class="mb-4">Un intrument gândit să-ți crească eficiența</h2>
+        </div>
+    </section>
 
     <div class="modal fade" id="eventModal" role="dialog" aria-labelledby="eventModalLabel">
         <div class="modal-dialog" role="document">
@@ -36,21 +77,21 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    <form id="eventForm" asp-controller="Calendar" asp-action="Calendar" role="form">
+                    <form id="eventForm" method="post" asp-controller="Calendar" asp-action="AddEvent" role="form">
                         <div class="form-group row">
-                            <label for="" class="col-sm-3 col-form-label">Titlu</label>
+                            <label for="" class="col-sm-3 col-form-label">Titlul Evenimentului</label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" id="EventTitle">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="" class="col-sm-3 col-form-label">Start Time</label>
+                            <label for="" class="col-sm-3 col-form-label">Data și ora de începere</label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" id="StartTime">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="" class="col-sm-3 col-form-label">End Time</label>
+                            <label for="" class="col-sm-3 col-form-label">Data și ora de finalizare</label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" id="EndTime">
                             </div>
@@ -65,36 +106,52 @@
                         <div class="form-group row">
                             <label for="" class="col-sm-3 col-form-label">Culoare</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="Color">
+                                <input type="color" class="form-control" id="Color">
                             </div>
                         </div>
                         <div class="form-group row">
                             <div class="alert-danger" asp-validation-summary="ModelOnly"></div>
-                            <label asp-for="Denumire" class="control-label"></label>
-                            <select asp-for="salaID"
-                                    class="form-control"
-                                    asp-items="@(new SelectList(@ViewBag.listofitems,"salaID", "Denumire"))">
-                            </select>
-                        </div>
-                        <div class="form-group row">
-                            <label for="" class="col-sm-3 col-form-label">Participanti</label>
+                            <label asp-for="salaID" class="col-sm-3 col-form-label">Selectare sală</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="Participanti">
+                                <select asp-for="salaID"
+                                        class="form-control"
+                                        asp-items="@(new SelectList(@ViewBag.listofitems, "salaID", "Denumire"))">
+                                </select>
+                            </div>
+                            <div class="form-group row">
+                                @if (ViewBag.salaID != null)
+                                {<textarea class="form-control" rows="1"></textarea> @ViewBag.salaID;
+                            }
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <div class="col-sm-3 offset-sm-9">
-                                <label><input type="checkbox" id="AllDay" /> All Day</label>
-                            </div>
-                        </div>
+                        <!--<div class="form-group row">
+        <div class="alert-danger" asp-validation-summary="ModelOnly"></div>
+        <label asp-for="ApplicationUserId" class="col-sm-3 col-form-label">Selectare participanți</label>
+        <div class="col-sm-9">
+            <select asp-for="ApplicationUserId"
+                    class="form-control"
+                    asp-items="@(new SelectList(@ViewBag.listofusers, "Id", "Email" ))">
+            </select>
+        </div>
+        <div class="form-group row">
+            @if (ViewBag.ApplicationUserId != null)
+            {<textarea class="form-control" rows="1"></textarea> @ViewBag.ApplicationUserId;
+        }
+        </div>
+    </div>-->
+                        <!--<div class="form-group row">
+        <div class="col-sm-3 offset-sm-9">
+            <label><input type="checkbox" id="AllDay" />Toată ziua</label>
+        </div>
+    </div>-->
                         <input type="hidden" id="isNewEvent" />
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" id="deleteEvent">Delete</button>
+                    <button type="button" class="btn btn-danger" id="deleteEvent">Șterge</button>
                     <div>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="eventModalSave">Save Changes</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Închide</button>
+                        <button type="button" class="btn btn-primary" id="eventModalSave">Salvează modificările</button>
                     </div>
                 </div>
             </div>
@@ -102,21 +159,15 @@
     </div>
 
     <script src="~/lib/jquery/dist/jquery.js"></script>
-    <!--<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>-->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js'></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.25.3/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js"></script>
-    <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/core/main.js'></script>
-     <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/interaction/main.min.js'></script>
-     <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/daygrid/main.js'></script>
-     <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/timegrid/main.min.js'></script>
-     <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar-scheduler/4.2.0/resource-common/main.js'></script>
-     <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar-scheduler/4.2.0/resource-daygrid/main.js'></script>
-     <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar-scheduler/4.2.0/resource-timegrid/main.js'></script>-->
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/jquery.qtip.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/jquery.qtip.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.5.2/flatpickr.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.5.2/flatpickr.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="js/calendar.js"></script>
+    <script src="~/js/lateral.js"></script>
 </body>

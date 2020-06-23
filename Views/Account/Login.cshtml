@@ -1,36 +1,68 @@
-﻿@model PlanificatorSali.Models.UserLoginModel
+﻿@model PlanificatorSali.Models.UserLoginModel;
+@{ Layout = null; }
 
-<h1>Login</h1>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+
+<link rel="stylesheet" href="~/fonts/font-awesome-4.7.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="~/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+<link rel="stylesheet" href="~/css/login.css" />
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" />
+<link rel="stylesheet" href="~/css/styles.css" />
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+    <div class="container">
+        <a asp-area="" asp-controller="Home" asp-action="Index"> <img src="~/img/OnTime.png" alt="OnTime" style="width:120px; height:auto; ">  </a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                <partial name="_LoginPartial" />
             </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="RememberMe" /> @Html.DisplayNameFor(model => model.RememberMe)
-                </label>
-            </div>
-            <div class="form-group">
-                <a asp-action="ForgotPassword">Forgot Password</a>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Log In" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
+</nav>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+<div class="limiter">
+    <div class="container-login100" style="background-image:url('../img/conference-room.jpg');">
+        <div class="wrap-login100 p-t-30 p-b-50">
+            <span class="login100-form-title p-b-41">
+                Autentificare
+            </span>
+            <form class="login100-form validate-form p-b-33 p-t-5" asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]">
+                <!--<div asp-validation-summary="ModelOnly" class="text-danger"></div>-->
+                <div class="wrap-input100 validate-input" data-validate="Introduceți adresa de email">
+                    <!--<label asp-for="Email" class="control-label"></label>-->
+                    <input asp-for="Email" class="input100" type="text" name="Email" placeholder="Email" />
+                    <span asp-validation-for="Email" class="focus-input100"></span>
+                </div>
+                <div class="wrap-input100 validate-input">
+                    <input asp-for="Password" class="input100" type="password" placeholder="Parola" />
+                    <span asp-validation-for="Password" class="focus-input100"></span>
+                </div>
+                <div class="wrap-input100 validate-input">
+                    <p class="input101">Ține-mă minte <input id="checkbox" type="checkbox" asp-for="RememberMe" /></p>
+                </div>
+                <div class="wrap-input100 validate-input">
+                    <a class="input101" asp-action="ForgotPassword">Parola uitată</a>
+                </div>
+                <div class="container-login100-form-btn m-t-32">
+                    <input type="submit" value="Autentificare" class="login100-form-btn" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<section class="page-section bg-dark text-white">
+    <div class="container text-center">
+        <h2 class="mb-4">Un intrument gândit să-ți crească eficiența</h2>
+
+    </div>
+</section>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/scripts.js"></script>

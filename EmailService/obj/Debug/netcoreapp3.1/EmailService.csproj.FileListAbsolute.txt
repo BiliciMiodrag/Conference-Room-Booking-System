@@ -1,0 +1,9 @@
+D:\Materiale licenta\PlanificatorSali\EmailService\bin\Debug\netcoreapp3.1\EmailService.deps.json
+D:\Materiale licenta\PlanificatorSali\EmailService\bin\Debug\netcoreapp3.1\EmailService.dll
+D:\Materiale licenta\PlanificatorSali\EmailService\bin\Debug\netcoreapp3.1\EmailService.pdb
+D:\Materiale licenta\PlanificatorSali\EmailService\obj\Debug\netcoreapp3.1\EmailService.csprojAssemblyReference.cache
+D:\Materiale licenta\PlanificatorSali\EmailService\obj\Debug\netcoreapp3.1\EmailService.AssemblyInfoInputs.cache
+D:\Materiale licenta\PlanificatorSali\EmailService\obj\Debug\netcoreapp3.1\EmailService.AssemblyInfo.cs
+D:\Materiale licenta\PlanificatorSali\EmailService\obj\Debug\netcoreapp3.1\EmailService.dll
+D:\Materiale licenta\PlanificatorSali\EmailService\obj\Debug\netcoreapp3.1\EmailService.pdb
+D:\Materiale licenta\PlanificatorSali\EmailService\obj\Debug\netcoreapp3.1\EmailService.csproj.CoreCompileInputs.cache

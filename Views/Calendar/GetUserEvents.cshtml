@@ -1,0 +1,74 @@
+﻿
+
+
+
+    <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Gestiune săli</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="~/css/modal.css" />
+
+    </head>
+    <body>
+        <div class="container">
+            <div class="table-wrapper">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h2>Evenimentele <b>Mele</b></h2>
+                        </div>
+
+                    </div>
+                </div>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+
+                            <th>Nr crt.</th>
+                            <th>Denumire</th>
+                            <th>Data de începere</th>
+                            <th>Data de finalizare</th>
+                            <th>Descriere</th>
+                            <th>Sala evenimentului</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ var i = 1;}
+                        @foreach (var item in ViewData["EventSala"] as IEnumerable<PlanificatorSali.Models.EventSala>)
+                        {
+                        <tr>
+
+                            <td>@i</td>
+                            <td>
+                                <img src="https://static.thenounproject.com/png/46950-200.png" alt="User">
+                                @item.eventsala.Title <br>
+
+                            </td>
+                            <td>
+                                @item.eventsala.Start <br>
+                            </td>
+                            <td>
+                                @item.eventsala.End <br>
+                            </td>
+                            <td>
+                                @item.eventsala.Description
+                            </td>
+                            <td>
+                            @item.roomlist.Denumire
+                                </td>
+                        </tr>
+                            i++;
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

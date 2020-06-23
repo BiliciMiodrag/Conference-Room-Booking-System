@@ -13,7 +13,7 @@ namespace PlanificatorSali.Data
     public class PlanificatorSaliContext: IdentityDbContext <ApplicationUser>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public PlanificatorSaliContext(DbContextOptions options, IHttpContextAccessor httpContextAccessor)
+        public PlanificatorSaliContext(DbContextOptions <PlanificatorSaliContext> options, IHttpContextAccessor httpContextAccessor)
             : base(options)
         {
             _httpContextAccessor = httpContextAccessor;
@@ -22,11 +22,16 @@ namespace PlanificatorSali.Data
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
+            modelBuilder.Entity<Participants>()
+                .HasKey(p => new { p.EventId,p.UserId });
         }
-        public DbSet<Evenimente> Evenimente { get; set; }
+        public DbSet<Event> Events { get; set; }
         public DbSet<Sala> Sala { get; set; }
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
+        public DbSet<Participants> Participants { get; set; }
 
-
+       
     }
+
 }
+

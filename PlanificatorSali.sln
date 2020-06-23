@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlanificatorSali", "PlanificatorSali.csproj", "{ACC1BBE3-C11B-46BB-985C-A343FC5C1436}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailService", "EmailService\EmailService.csproj", "{B21B0BCC-B0F2-4494-95AD-AA11B0DE5FA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmailService", "EmailService\EmailService.csproj", "{B21B0BCC-B0F2-4494-95AD-AA11B0DE5FA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanificatorSali.Tests", "..\PlanificatorSali.Tests\PlanificatorSali.Tests.csproj", "{8CAEA375-1895-42C6-AFDA-0971AA542210}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{B21B0BCC-B0F2-4494-95AD-AA11B0DE5FA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B21B0BCC-B0F2-4494-95AD-AA11B0DE5FA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B21B0BCC-B0F2-4494-95AD-AA11B0DE5FA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CAEA375-1895-42C6-AFDA-0971AA542210}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CAEA375-1895-42C6-AFDA-0971AA542210}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CAEA375-1895-42C6-AFDA-0971AA542210}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CAEA375-1895-42C6-AFDA-0971AA542210}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
