@@ -1,4 +1,3 @@
-# Planificator-Sedinte-Licenta
-Aplicatia pentru licenta 
+# Conference Room Booking System
 
 
